@@ -15,7 +15,7 @@ class UsersController extends Controller
         $this->middleware('auth', ['except' => ['show']]);
     }
 
-	
+
     public function show(User $user)
     {
        return view('users.show',compact('user'));
@@ -24,12 +24,14 @@ class UsersController extends Controller
 
     public function edit(User $user)
     { 	
+    	$this->authorize('update',$user);
     	return view('users.edit',compact('user'));
     }
 
     public function update(UserRequest $Request,ImageUploadHandler $uploader,User $user)
     { 	
     	// dd($Request->avatar);
+    	$this->authorize('update', $user);
 	    $data = $Request->all();
 	   if ($Request->avatar) {
             $result = $uploader->save($Request->avatar, 'avatars', $user->id,362);
