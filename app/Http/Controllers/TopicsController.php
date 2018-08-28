@@ -27,12 +27,13 @@ class TopicsController extends Controller
     public function show(Request $request,Topic $topic)
     {	
 
+    	$user = Auth::user();
     	if( !empty($topic->slug) && $request->slug != $topic->slug)
     	{ 
     		return redirect($topic->link(), 301);
     	}
 
-        return view('topics.show', compact('topic'));
+        return view('topics.show', compact('topic','user'));
     }
 
 	public function create(Topic $topic)
