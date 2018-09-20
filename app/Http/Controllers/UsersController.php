@@ -10,7 +10,6 @@ use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {	
-    use Traits\ActiveUserHelper;
 
 	public function __construct()
     {
