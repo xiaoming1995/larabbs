@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Mail;
 
 class User extends Authenticatable
 {
@@ -87,5 +88,120 @@ class User extends Authenticatable
         $this->attributes['avatar'] = $path;
     }
     
+
+    //多对多 用户粉丝关联
+    public function followers()
+    { 
+        return $this->belongsToMany(User::class,'followers','user_id','follower_id')->withTimestamps();
+
+    }
+
+    //多对多 用户关注关联
+    public function attention()
+    { 
+        return $this->belongsToMany(User::class,'followers','follower_id','user_id')->withTimestamps();
+    }
+
+    //关注用户
+    public function follow($user_ids)
+    { 
+        $user_ids = is_array($user_ids) ? $user_ids : compact('user_ids');
+       
+        if(!empty($user_ids)) $this->attention()->sync($user_ids,false);         
+
+    }
+
+    //取消关注
+    public function unfollow($user_ids)
+    { 
+        $user_ids = is_array($user_ids) ? $user_ids : compact('user_ids');
+
+        if(!empty($user_ids)) $this->attention()->detach($user_ids);
+
+    }
+
+    //判断是否已经关注
+    public function isAttention($user_id)
+    {   
+        return $this->attention->contains($user_id);        
+    }
+
+
+    //判断是否激活
+    public function isActivation($user_id)
+    {   
+        if(!empty($user = $this->find($user_id) ))
+        {
+            if(!empty($user->activation_token) && !isset($user->activation))
+            { 
+                //activation_token不为空 跟 activation状态为false(未激活)
+                session()->flash('information','账号未激活请先激活');
+                return redirect()->route('confirm_email');
+
+            }elseif( empty($user->activation_token) && isset($user->activation) ){ 
+                //activation_token为空 跟 true(激活)
+                return true;
+            }
+
+        }else{
+            session()->flash('error','没有此账号');
+            return redirect()->back();
+        }
+
+    }
+
+    //激活用户
+    // public function activation($token)
+    // {   
+
+    //     if(!empty( $user = $this->where('activation_token',$token)->firstOrFail() )){ 
+    //         $user->activation  = true;
+    //         $user->activation_token = null;
+
+    //         if( $user->save() ){ 
+
+    //             if( Auth::check() )
+    //             {
+    //                 session()->flash('success','恭喜你,激活成功'); 
+    //                 return redirect()->route('users.show',[$user]);  
+
+    //             }else{ 
+
+    //                 session()->flash('error','激活失敗,请登录账号'); 
+    //                 return redirect()->route('/');
+    //             }
+                
+    //         }else{
+    //             session()->flash('error','激活失敗,此账号无需激活'); 
+    //             return redirect()->route('/');
+    //         }
+
+    //     }
+
+    // }
+
+
+    //发送注册邮件
+    public function sendEmailConfirmationTo($user)
+    {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = '460667926@qq.com';
+        $name = 'Ming';
+        $to = $user->email;
+        $subject = "感谢注册 Drip memory 应用！请确认你的邮箱。";
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
+    }
+
+    public function is_Activation($user_id)
+    {   
+        return $this->where('user_id',$user_id)->get(['activation']);
+    }
+
+
+
 
 }

@@ -12,7 +12,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                LaraBBS
+                Drip memory
             </a>
         </div>
 
@@ -20,10 +20,16 @@
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
                 <li class="{{ active_class(if_route('topics_index'))}}"><a href="{{ route('topics.index') }}">话题</a></li>
-                <li class="{{ active_class(if_route('categories.show') && if_route_param('category',1))}}"><a href="{{ route('categories.show', 1) }}">分享</a></li>
+                @foreach(Cache::get('Category_default') as $key => $val)
+                <li class="{{ active_class(if_route('categories.show') && if_route_param('category',$val->id ))}}"><a href="{{ route('categories.show', $val->id ) }}">{{ $val->name }}</a></li>
+                @endforeach
+                <li class="{{ active_class(if_route('about'))}}"><a href="{{ route('about') }}">关于网站</a></li>
+
+               <!--  <li class="{{ active_class(if_route('categories.show') && if_route_param('category',1))}}"><a href="{{ route('categories.show', 1) }}">分享</a></li>
                 <li class="{{ active_class((if_route('categories.show') && if_route_param('category', 2))) }}"><a href="{{ route('categories.show', 2) }}">教程</a></li>
                 <li class="{{ active_class((if_route('categories.show') && if_route_param('category', 3))) }}"><a href="{{ route('categories.show', 3) }}">问答</a></li>
-                <li class="{{ active_class((if_route('categories.show') && if_route_param('category', 4))) }}"><a href="{{ route('categories.show', 4) }}">公告</a></li>
+                <li class="{{ active_class((if_route('categories.show') && if_route_param('category', 4))) }}"><a href="{{ route('categories.show', 4) }}">公告</a></li> -->
+
             </ul>
 
             <!-- Right Side Of Navbar -->

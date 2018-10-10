@@ -19,16 +19,16 @@ class SeedCategoriesData extends Migration
                 'description' => '分享创造，分享发现',
             ],
             [
-                'name'        => '教程',
-                'description' => '开发技巧、推荐扩展包等',
+                'name'        => '服务器',
+                'description' => '网站部署等',
             ],
             [
-                'name'        => '问答',
-                'description' => '请保持友善，互帮互助',
+                'name'        => 'Laravel',
+                'description' => '我们都在Laravel，互帮互助',
             ],
             [
-                'name'        => '公告',
-                'description' => '站点公告',
+                'name'        => 'PHP',
+                'description' => '关于PHP的一切学术问题',
             ],
         ];
 

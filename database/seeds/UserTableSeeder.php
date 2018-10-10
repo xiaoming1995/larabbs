@@ -27,7 +27,7 @@ class UserTableSeeder extends Seeder
         ];
 
         //生成数据集合
-        $users = factory(User::class)->times(10)->make()->each(function ($user,$index) use ($faker,$avatars){
+        $users = factory(User::class)->times(1)->make()->each(function ($user,$index) use ($faker,$avatars){
         	$user->avatar = $faker->randomElement($avatars);
         });
 
@@ -40,8 +40,9 @@ class UserTableSeeder extends Seeder
         // 单独处理第一个用户的数据
         $user = User::find(1);
         $user->name = 'LiuMing';
-        $user->email = 'LiuMing@seczone.com';
+        $user->email = '460667926@qq.com';
         $user->avatar = 'https://fsdhubcdn.phphub.org/uploads/images/201710/14/1/ZqM7iaP4CR.png?imageView2/1/w/200/h/200';
+        $user->activation = true;
         $user->save();
         
          // 初始化用户角色，将 1 号用户指派为『站长』

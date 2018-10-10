@@ -11,6 +11,7 @@ use App\Handlers\ImageUploadHandler;
 use Auth;
 use App\Models\User;
 use App\Models\Link;
+use Cache;
 
 class TopicsController extends Controller
 {
@@ -22,6 +23,7 @@ class TopicsController extends Controller
 	public function index(Request $request,Topic $topic,User $user,Link $link)
 	{
 		// $topics = Topic::with('user','category')->paginate(30);
+		// dd(Cache::get('Category_default'));
 		$topics = $topic->withOrder($request->order)->paginate(20);
 		$active_users = $user->getActiveUsers();
 		$links = $link->getAllCached();

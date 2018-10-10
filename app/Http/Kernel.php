@@ -68,6 +68,11 @@ class Kernel extends HttpKernel
             // 记录用户最后活跃时间
             \App\Http\Middleware\RecordLastActivedTime::class,
 
+             // 初始化分类栏目
+            \App\Http\Middleware\CategoryDefault::class,
+
+           
+
         ],
          // API 中间件组，应用于 routes/api.php 路由文件
         'api' => [
@@ -89,6 +94,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         // 只有登录用户才能访问，我们在控制器的构造方法中大量使用
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+
         // HTTP Basic Auth 认证
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
          // 处理路由绑定
@@ -103,5 +109,12 @@ class Kernel extends HttpKernel
         
         // 访问节流，类似于 『1 分钟只能请求 10 次』的需求，一般在 API 中使用
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+
+        //加载栏目
+        'category' => \App\Http\Middleware\CategoryDefault::class,
+
+         //預判斷激活用戶
+        'activation' => \App\Http\Middleware\ActivationStatus::class,
+
     ];
 }

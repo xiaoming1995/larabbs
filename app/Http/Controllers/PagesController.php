@@ -22,4 +22,9 @@ class PagesController extends Controller
         return view('pages.permission_denied');
    }
 
+   public function about()
+   {
+      return view('pages.about');    
+   }
+
 }

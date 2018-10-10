@@ -21,6 +21,21 @@
                         </a>
                     </div>
                 </div>
+                <hr>
+                <div>
+                    @if(!empty(Auth::user()))
+                        @if(Auth::user()->isAttention($topic->user_id))
+                        <a href="{{ route('user.attention',[$topic->user_id]) }}" class="btn btn-info btn-block" aria-label="Left Align" title="点击取消关注">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 已关注
+                        </a>
+                        @elseif(Auth::user()->id !== $topic->user_id)
+                        <a href="{{ route('user.attention',[$topic->user_id]) }}" class="btn btn-success btn-block" aria-label="Left Align" title="点击关注">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 关注用户
+                        </a>
+                        @endif
+
+                    @endif
+                </div>
             </div>
         </div>
     </div>

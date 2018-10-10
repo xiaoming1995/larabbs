@@ -21,8 +21,7 @@ class CategoriesController extends Controller
         $active_users = $user->getActiveUsers();
 
         //推荐链接
-        $links = $link->getAllCache();
-
+        $links = $link->getAllCached();
 
     	//传参变量话题和分类到模板中
     	return view('topics.index',compact('topics','category','active_users','links'));
